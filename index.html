@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACR — Backyard Renovation, Beyond Expectations</title>
+  <meta name="description" content="ACR designs and builds premium backyard renovations — outdoor kitchens, pools, patios, and landscapes crafted around your vision." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      /* Palette pulled from the inspiration: soft sky-blue gradient, white, near-black accents */
+      --sky-top: #cfe1f1;
+      --sky-mid: #bdd6ea;
+      --sky-deep: #a7c5de;
+      --ink: #14171a;
+      --ink-soft: #2a2f35;
+      --muted: #6b7682;
+      --muted-light: #9aa6b2;
+      --white: #ffffff;
+      --tint: #eef4fa;
+      --tint-2: #e3edf6;
+      --line: #e6ebf0;
+      --radius-pill: 999px;
+      --radius-lg: 32px;
+      --radius-md: 22px;
+      --shadow-soft: 0 18px 50px -20px rgba(30, 60, 90, 0.30);
+      --shadow-card: 0 24px 60px -28px rgba(30, 60, 90, 0.38);
+      --maxw: 1200px;
+      --display: 'Quicksand', system-ui, sans-serif;
+      --body: 'Inter', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .display { font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; line-height: 1.05; }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* ---------------- Buttons ---------------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--display); font-weight: 600; font-size: 15px;
+      padding: 14px 24px; border-radius: var(--radius-pill);
+      border: 1px solid transparent; cursor: pointer; transition: all .25s ease;
+      white-space: nowrap;
+    }
+    .btn-dark { background: var(--ink); color: #fff; }
+    .btn-dark:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+    .btn-dark .arrow {
+      display: grid; place-items: center; width: 26px; height: 26px;
+      background: #fff; color: var(--ink); border-radius: 50%; transition: transform .25s ease;
+    }
+    .btn-dark:hover .arrow { transform: rotate(45deg); }
+    .btn-light { background: var(--tint); color: var(--ink); border-color: var(--line); }
+    .btn-light:hover { background: var(--tint-2); }
+    .btn-ghost { background: rgba(255,255,255,.18); color: #fff; border-color: rgba(255,255,255,.4); backdrop-filter: blur(8px); }
+    .btn-ghost:hover { background: rgba(255,255,255,.3); }
+
+    /* ---------------- Nav ---------------- */
+    .nav-shell { position: fixed; top: 18px; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; padding: 0 16px; }
+    .nav {
+      width: 100%; max-width: var(--maxw);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; padding: 10px 12px 10px 26px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.45);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-radius: var(--radius-pill);
+      transition: background .3s ease, box-shadow .3s ease;
+    }
+    .nav.scrolled { background: rgba(255,255,255,.85); box-shadow: var(--shadow-soft); border-color: var(--line); }
+    .brand { font-family: var(--display); font-weight: 700; font-size: 22px; color: var(--ink); letter-spacing: -0.02em; }
+    .brand span { color: var(--sky-deep); }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      font-family: var(--display); font-weight: 600; font-size: 15px; color: var(--ink-soft);
+      padding: 10px 20px; border-radius: var(--radius-pill); transition: all .2s ease;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,.4); }
+    .nav-links a.active { background: #fff; color: var(--ink); box-shadow: 0 6px 18px -8px rgba(0,0,0,.25); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .icon-btn {
+      display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.25); cursor: pointer; transition: all .2s ease;
+    }
+    .icon-btn:hover { background: #fff; }
+    .icon-btn.plus { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .icon-btn.plus:hover { transform: rotate(90deg); }
+    .nav-toggle { display: none; }
+
+    /* ---------------- Hero ---------------- */
+    .hero {
+      position: relative; padding: 150px 0 0;
+      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 42%, #d8e6f2 70%, #ffffff 100%);
+      text-align: center; overflow: hidden;
+    }
+    .hero h1 { font-size: clamp(42px, 8vw, 88px); color: var(--ink); font-weight: 500; }
+    .hero .sub { max-width: 560px; margin: 26px auto 0; color: var(--ink-soft); font-size: clamp(15px, 2vw, 18px); opacity: .8; }
+    .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+    .hero-stage { position: relative; max-width: 1080px; margin: 56px auto 0; padding: 0 24px; }
+    .hero-img-frame {
+      position: relative; border-radius: 28px 28px 0 0; overflow: hidden;
+      box-shadow: 0 -10px 60px -30px rgba(30,60,90,.5);
+    }
+    .hero-img-frame img { width: 100%; height: clamp(360px, 56vw, 620px); object-fit: cover; }
+
+    /* Hotspots */
+    .hotspot { position: absolute; transform: translate(-50%, -50%); z-index: 4; }
+    .hotspot .dot {
+      width: 26px; height: 26px; border-radius: 50%; background: #fff;
+      display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.25); cursor: pointer;
+    }
+    .hotspot .dot::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+    .hotspot .pulse {
+      position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(255,255,255,.8);
+      animation: pulse 2.4s ease-out infinite;
+    }
+    @keyframes pulse { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(1.8); opacity: 0; } }
+    .hotspot.labeled { display: flex; align-items: center; gap: 0; }
+    .hotspot .tag {
+      background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
+      font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--ink);
+      padding: 10px 16px; border-radius: var(--radius-pill); box-shadow: 0 6px 18px -8px rgba(0,0,0,.3);
+      margin-right: -6px;
+    }
+    .h1 { top: 30%; left: 28%; }
+    .h2 { top: 46%; left: 64%; }
+    .h3 { top: 70%; left: 46%; }
+
+    /* ---------------- Section scaffolding ---------------- */
+    section { position: relative; }
+    .section-pad { padding: 96px 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 600;
+      font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--sky-deep);
+      background: var(--tint); padding: 8px 16px; border-radius: var(--radius-pill); margin-bottom: 22px;
+    }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+    .section-head h2 { font-size: clamp(30px, 5vw, 52px); font-weight: 500; }
+    .section-head p { margin-top: 18px; color: var(--muted); font-size: 17px; }
+
+    /* ---------------- Vision (inline image headline) ---------------- */
+    .vision { text-align: center; padding: 110px 0 90px; }
+    .vision h2 { font-size: clamp(34px, 6.5vw, 76px); font-weight: 500; max-width: 980px; margin: 0 auto; }
+    .inline-img {
+      display: inline-block; vertical-align: middle; width: clamp(90px, 14vw, 150px); height: clamp(48px, 7vw, 74px);
+      border-radius: var(--radius-pill); object-fit: cover; margin: 0 6px; box-shadow: var(--shadow-soft);
+    }
+    .vision p { max-width: 620px; margin: 30px auto 0; color: var(--muted); font-size: 17px; }
+    .vision-cta { display: flex; gap: 12px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+
+    /* ---------------- Stats ---------------- */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
+    .stat { text-align: center; padding: 28px 16px; background: var(--tint); border-radius: var(--radius-md); }
+    .stat .num { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 5vw, 52px); color: var(--ink); }
+    .stat .lbl { color: var(--muted); font-size: 14px; margin-top: 6px; }
+
+    /* ---------------- Services ---------------- */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .service-card {
+      background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-lg);
+      padding: 34px 30px; transition: all .3s ease;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); border-color: transparent; }
+    .service-card .ico {
+      width: 58px; height: 58px; border-radius: 18px; background: var(--tint); color: var(--sky-deep);
+      display: grid; place-items: center; margin-bottom: 22px; font-size: 26px;
+    }
+    .service-card h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+    .service-card p { color: var(--muted); font-size: 15px; }
+
+    /* ---------------- Recent Projects ---------------- */
+    .projects { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+    .project-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; min-height: 340px; cursor: pointer; }
+    .project-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
+    .project-card:hover img { transform: scale(1.06); }
+    .project-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(10,20,30,.78) 100%); }
+    .project-info { position: absolute; left: 24px; right: 24px; bottom: 24px; z-index: 2; color: #fff; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+    .project-info h3 { font-size: 24px; font-weight: 600; }
+    .project-info span { font-size: 14px; opacity: .85; }
+    .project-info .go { width: 46px; height: 46px; flex: none; border-radius: 50%; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4); backdrop-filter: blur(8px); display: grid; place-items: center; transition: all .25s ease; }
+    .project-card:hover .go { background: #fff; color: var(--ink); }
+    .projects-col { display: grid; gap: 24px; }
+    .projects-col .project-card { min-height: 158px; }
+
+    /* ---------------- Portfolio ---------------- */
+    .filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .filter {
+      font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--ink-soft);
+      padding: 10px 22px; border-radius: var(--radius-pill); border: 1px solid var(--line); background: #fff; cursor: pointer; transition: all .2s ease;
+    }
+    .filter:hover { border-color: var(--sky-deep); }
+    .filter.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .pf-item { position: relative; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 1 / 1; cursor: pointer; }
+    .pf-item.tall { aspect-ratio: 1 / 1.35; }
+    .pf-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .pf-item:hover img { transform: scale(1.07); }
+    .pf-cap { position: absolute; left: 14px; bottom: 14px; z-index: 2; color: #fff; font-family: var(--display); font-weight: 600; opacity: 0; transform: translateY(8px); transition: all .3s ease; }
+    .pf-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(10,20,30,.7) 100%); opacity: 0; transition: opacity .3s ease; }
+    .pf-item:hover::after, .pf-item:hover .pf-cap { opacity: 1; transform: translateY(0); }
+    .pf-cap small { display: block; font-weight: 400; font-size: 12px; opacity: .85; }
+    .pf-hide { display: none !important; }
+
+    /* ---------------- Testimonials ---------------- */
+    .testimonials { background: linear-gradient(180deg, var(--tint) 0%, #ffffff 100%); }
+    .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .t-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px 30px; display: flex; flex-direction: column; gap: 18px; transition: all .3s ease; }
+    .t-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); border-color: transparent; }
+    .stars { color: #f4b740; font-size: 16px; letter-spacing: 2px; }
+    .t-card p { color: var(--ink-soft); font-size: 16px; }
+    .t-person { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+    .t-person img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+    .t-person .name { font-family: var(--display); font-weight: 600; }
+    .t-person .role { font-size: 13px; color: var(--muted); }
+
+    /* ---------------- CTA ---------------- */
+    .cta-section { padding: 40px 0 110px; }
+    .cta {
+      position: relative; border-radius: 40px; overflow: hidden; text-align: center; color: #fff;
+      padding: clamp(56px, 9vw, 110px) 24px;
+    }
+    .cta img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .cta::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,40,60,.55), rgba(20,40,60,.7)); }
+    .cta-inner { position: relative; z-index: 2; }
+    .cta h2 { font-size: clamp(32px, 6vw, 60px); font-weight: 500; max-width: 760px; margin: 0 auto; }
+    .cta p { margin: 20px auto 32px; max-width: 520px; opacity: .9; }
+
+    /* ---------------- Footer ---------------- */
+    footer { background: var(--ink); color: #c9d2db; padding: 70px 0 32px; }
+    .foot-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .foot-brand { font-family: var(--display); font-weight: 700; font-size: 28px; color: #fff; }
+    .foot-brand span { color: var(--sky-deep); }
+    .foot-top p { margin-top: 16px; font-size: 15px; max-width: 280px; }
+    .foot-col h4 { font-family: var(--display); color: #fff; font-size: 16px; margin-bottom: 18px; }
+    .foot-col a { display: block; font-size: 15px; padding: 6px 0; transition: color .2s; }
+    .foot-col a:hover { color: #fff; }
+    .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 26px; font-size: 14px; flex-wrap: wrap; gap: 12px; }
+
+    /* ---------------- Reveal animation ---------------- */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ---------------- Responsive ---------------- */
+    @media (max-width: 900px) {
+      .nav-links, .nav-actions .icon-btn:not(.plus) { display: none; }
+      .nav-toggle { display: grid; }
+      .services-grid, .t-grid, .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .foot-top { grid-template-columns: 1fr 1fr; }
+      .h1, .h2, .h3 { display: none; }
+    }
+    @media (max-width: 560px) {
+      .section-pad { padding: 68px 0; }
+      .services-grid, .t-grid, .portfolio-grid, .stats { grid-template-columns: 1fr; }
+      .hero { padding-top: 120px; }
+      .foot-top { grid-template-columns: 1fr; }
+      .nav { padding-left: 20px; }
+    }
+
+    /* Mobile menu */
+    .mobile-menu { position: fixed; inset: 0; z-index: 99; background: rgba(255,255,255,.97); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transform: translateY(-100%); transition: transform .4s ease; }
+    .mobile-menu.open { transform: none; }
+    .mobile-menu a { font-family: var(--display); font-weight: 600; font-size: 28px; padding: 12px; }
+    .mobile-menu .btn { margin-top: 20px; }
+
+    /* ---------------- AI Concierge (chat + voice) ---------------- */
+    .ai-fab {
+      position: fixed; right: 24px; bottom: 24px; z-index: 120;
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 20px 12px 14px; border: none; cursor: pointer;
+      background: var(--ink); color: #fff; border-radius: var(--radius-pill);
+      font-family: var(--display); font-weight: 600; font-size: 15px;
+      box-shadow: var(--shadow-card); transition: transform .25s ease, opacity .25s ease;
+    }
+    .ai-fab:hover { transform: translateY(-3px); }
+    .ai-fab .orb {
+      width: 30px; height: 30px; border-radius: 50%; flex: none;
+      background: radial-gradient(circle at 30% 30%, #eaf4ff, var(--sky-deep));
+      box-shadow: 0 0 0 0 rgba(167,197,222,.7); animation: orbpulse 2.6s ease-out infinite;
+    }
+    @keyframes orbpulse { 0% { box-shadow: 0 0 0 0 rgba(167,197,222,.6); } 100% { box-shadow: 0 0 0 14px rgba(167,197,222,0); } }
+    .ai-fab.hidden { opacity: 0; pointer-events: none; transform: scale(.8); }
+
+    .ai-panel {
+      position: fixed; right: 24px; bottom: 24px; z-index: 121;
+      width: min(390px, calc(100vw - 32px)); height: min(620px, calc(100vh - 48px));
+      background: #fff; border-radius: 26px; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: var(--shadow-card);
+      border: 1px solid var(--line);
+      opacity: 0; transform: translateY(20px) scale(.96); pointer-events: none;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .ai-panel.open { opacity: 1; transform: none; pointer-events: auto; }
+
+    .ai-head {
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky-mid));
+      padding: 20px 22px; display: flex; align-items: center; gap: 14px; color: var(--ink);
+    }
+    .ai-head .orb { width: 40px; height: 40px; border-radius: 50%; flex: none;
+      background: radial-gradient(circle at 30% 30%, #fff, #cfe1f1); box-shadow: var(--shadow-soft); }
+    .ai-head .meta { flex: 1; }
+    .ai-head .meta strong { font-family: var(--display); font-weight: 700; font-size: 17px; display: block; }
+    .ai-head .meta small { font-size: 12.5px; opacity: .75; display: flex; align-items: center; gap: 6px; }
+    .ai-head .meta small::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #34c759; box-shadow: 0 0 0 3px rgba(52,199,89,.25); }
+    .ai-head .close { background: rgba(255,255,255,.4); border: none; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; transition: background .2s; }
+    .ai-head .close:hover { background: #fff; }
+
+    .ai-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: var(--tint); }
+    .msg { max-width: 82%; padding: 12px 16px; border-radius: 18px; font-size: 14.5px; line-height: 1.5; }
+    .msg.bot { background: #fff; border: 1px solid var(--line); align-self: flex-start; border-bottom-left-radius: 6px; }
+    .msg.user { background: var(--ink); color: #fff; align-self: flex-end; border-bottom-right-radius: 6px; }
+    .msg.typing { display: flex; gap: 5px; align-items: center; }
+    .msg.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted-light); animation: blink 1.2s infinite; }
+    .msg.typing i:nth-child(2) { animation-delay: .2s; }
+    .msg.typing i:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+
+    .ai-chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 20px 12px; background: var(--tint); }
+    .ai-chip { font-family: var(--display); font-weight: 600; font-size: 12.5px; color: var(--ink-soft);
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius-pill); padding: 7px 13px; cursor: pointer; transition: all .2s; }
+    .ai-chip:hover { border-color: var(--sky-deep); background: var(--tint-2); }
+
+    .ai-foot { padding: 14px; border-top: 1px solid var(--line); background: #fff; }
+    .ai-input { display: flex; align-items: center; gap: 8px; background: var(--tint); border-radius: var(--radius-pill); padding: 6px 6px 6px 18px; }
+    .ai-input input { flex: 1; border: none; background: none; outline: none; font-family: var(--body); font-size: 14.5px; color: var(--ink); }
+    .ai-input button { border: none; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; transition: all .2s; flex: none; }
+    .ai-input .mic { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .ai-input .mic:hover { background: var(--tint-2); }
+    .ai-input .mic.listening { background: #ff3b30; color: #fff; border-color: #ff3b30; animation: orbpulse 1.4s ease-out infinite; }
+    .ai-input .send { background: var(--ink); color: #fff; }
+    .ai-input .send:hover { transform: scale(1.06); }
+    .ai-tools { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 0 4px; }
+    .ai-voice-toggle { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); cursor: pointer; user-select: none; font-family: var(--display); font-weight: 600; }
+    .ai-voice-toggle .sw { width: 34px; height: 20px; border-radius: 999px; background: var(--line); position: relative; transition: background .2s; }
+    .ai-voice-toggle .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .2s; }
+    .ai-voice-toggle.on .sw { background: var(--sky-deep); }
+    .ai-voice-toggle.on .sw::after { transform: translateX(14px); }
+    .ai-foot .hint { font-size: 11px; color: var(--muted-light); }
+
+    @media (max-width: 560px) {
+      .ai-panel { right: 8px; bottom: 8px; height: calc(100vh - 16px); }
+      .ai-fab { right: 16px; bottom: 16px; }
+      .ai-fab .label { display: none; }
+      .ai-fab { padding: 14px; }
+    }
+
+    /* header call button */
+    .ai-head .call-btn { background: rgba(255,255,255,.4); border: none; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; transition: background .2s; margin-left: auto; }
+    .ai-head .call-btn:hover { background: #34c759; color: #fff; }
+    .ai-head .close { margin-left: 8px; }
+
+    /* ---------------- AI Call overlay ---------------- */
+    .ai-call {
+      position: fixed; inset: 0; z-index: 200; display: none;
+      flex-direction: column; align-items: center; justify-content: center; gap: 0;
+      background: radial-gradient(120% 100% at 50% 0%, #2a3f54 0%, #14171a 60%);
+      color: #fff; text-align: center; padding: 40px 24px;
+    }
+    .ai-call.open { display: flex; }
+    .ai-call .caller { font-family: var(--display); font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+    .ai-call .state { font-size: 14px; color: rgba(255,255,255,.6); letter-spacing: .04em; min-height: 20px; }
+
+    .call-orb-wrap { position: relative; width: 220px; height: 220px; display: grid; place-items: center; margin: 38px 0; }
+    .call-orb {
+      width: 130px; height: 130px; border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, #eaf4ff, var(--sky-deep) 70%, #7fa8c9);
+      box-shadow: 0 0 60px -6px rgba(167,197,222,.6); transition: transform .3s ease;
+    }
+    .call-orb-wrap .ring { position: absolute; border-radius: 50%; border: 2px solid rgba(167,197,222,.4); inset: 0; opacity: 0; }
+    /* state-driven animations */
+    .ai-call[data-state="listening"] .ring { animation: ringpulse 1.8s ease-out infinite; opacity: 1; }
+    .ai-call[data-state="listening"] .ring:nth-child(2) { animation-delay: .6s; }
+    .ai-call[data-state="listening"] .ring:nth-child(3) { animation-delay: 1.2s; }
+    .ai-call[data-state="speaking"] .call-orb { animation: orbtalk .7s ease-in-out infinite alternate; }
+    .ai-call[data-state="thinking"] .call-orb { animation: orbspin 1s linear infinite; background: conic-gradient(from 0deg, var(--sky-deep), #eaf4ff, var(--sky-deep)); }
+    .ai-call[data-state="connecting"] .call-orb { animation: orbtalk 1.1s ease-in-out infinite alternate; }
+    @keyframes ringpulse { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.25); opacity: 0; } }
+    @keyframes orbtalk { from { transform: scale(1); } to { transform: scale(1.12); } }
+    @keyframes orbspin { to { transform: rotate(360deg); } }
+
+    .call-caption { max-width: 520px; min-height: 52px; font-size: 17px; line-height: 1.5; color: #fff; opacity: .92; margin-bottom: 8px; }
+    .call-caption .you { display: block; font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 4px; }
+    .call-controls { display: flex; align-items: center; gap: 22px; margin-top: 34px; }
+    .call-ctrl { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,.6); }
+    .call-ctrl button { width: 62px; height: 62px; border-radius: 50%; border: none; cursor: pointer; display: grid; place-items: center; transition: all .2s; background: rgba(255,255,255,.14); color: #fff; }
+    .call-ctrl button:hover { background: rgba(255,255,255,.26); }
+    .call-ctrl button.end { background: #ff3b30; }
+    .call-ctrl button.end:hover { background: #ff5147; }
+    .call-ctrl button.muted { background: #fff; color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <div class="nav-shell">
+    <nav class="nav" id="nav">
+      <a href="#home" class="brand">ACR<span>*</span></a>
+      <div class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="Account">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </button>
+        <button class="icon-btn plus" id="navToggle" aria-label="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact" class="btn btn-dark">Get a Quote <span class="arrow">→</span></a>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero" id="home">
+    <div class="wrap">
+      <h1>Living, reimagined<br/>beyond the back door.</h1>
+      <p class="sub">ACR designs and builds extraordinary backyards — where luxury meets the outdoors, crafted entirely around the way you live.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-dark">Start your project <span class="arrow">→</span></a>
+        <a href="#portfolio" class="btn btn-ghost">View Portfolio</a>
+      </div>
+    </div>
+
+    <div class="hero-stage">
+      <div class="hero-img-frame">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80" alt="Luxury modern backyard with pool and patio" />
+        <div class="hotspot h1"><span class="pulse"></span><span class="dot"></span></div>
+        <div class="hotspot h2"><span class="pulse"></span><span class="dot"></span></div>
+        <div class="hotspot labeled h3"><span class="tag">Outdoor Kitchen</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== VISION ===================== -->
+  <section class="vision wrap" id="about">
+    <h2 class="reveal">Shaping outdoor spaces around
+      <img class="inline-img" src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?auto=format&fit=crop&w=400&q=80" alt="patio" />
+      your vision.</h2>
+    <p class="reveal">We craft unique backyards that seamlessly blend your vision with timeless design — ensuring every patio, pool, and planting reflects your personality and the way you want to live outdoors.</p>
+    <div class="vision-cta reveal">
+      <a href="#contact" class="btn btn-dark">Keep in Touch <span class="arrow">→</span></a>
+      <a href="#services" class="btn btn-light">Learn More</a>
+    </div>
+  </section>
+
+  <!-- ===================== STATS ===================== -->
+  <section class="section-pad" style="padding-top:0;">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat reveal"><div class="num">450+</div><div class="lbl">Backyards transformed</div></div>
+        <div class="stat reveal"><div class="num">18</div><div class="lbl">Years of craft</div></div>
+        <div class="stat reveal"><div class="num">98%</div><div class="lbl">Client satisfaction</div></div>
+        <div class="stat reveal"><div class="num">26</div><div class="lbl">Design awards</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="section-pad" id="services" style="background:var(--tint);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">What we do</span>
+        <h2>Every detail, beautifully built.</h2>
+        <p>From the first sketch to the final stone, we handle the full transformation of your outdoor space.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="ico">🏊</div>
+          <h3>Pools & Water</h3>
+          <p>Architectural pools, spas, and water features engineered to be the centerpiece of your yard.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="ico">🔥</div>
+          <h3>Outdoor Living</h3>
+          <p>Kitchens, fire pits, pergolas, and lounges that turn the backyard into your favorite room.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="ico">🌿</div>
+          <h3>Landscape Design</h3>
+          <p>Planting, lighting, and hardscape composed for year-round beauty and effortless upkeep.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="ico">🪨</div>
+          <h3>Patios & Decks</h3>
+          <p>Natural stone, porcelain, and warm timber surfaces built to last and made to gather on.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="ico">💡</div>
+          <h3>Lighting & Tech</h3>
+          <p>Smart, layered lighting and automation that extends every evening outdoors.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="ico">📐</div>
+          <h3>Design & Build</h3>
+          <p>One accountable team from concept and 3D renders through to flawless construction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RECENT PROJECTS ===================== -->
+  <section class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Recent projects</span>
+        <h2>Fresh from the field.</h2>
+        <p>A look at backyards we've completed in the last few seasons.</p>
+      </div>
+      <div class="projects">
+        <div class="project-card reveal">
+          <img src="https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=1200&q=80" alt="Modern pool backyard" />
+          <div class="project-info">
+            <div><h3>The Hillside Retreat</h3><span>Infinity pool · Outdoor kitchen · 2025</span></div>
+            <span class="go">→</span>
+          </div>
+        </div>
+        <div class="projects-col">
+          <div class="project-card reveal">
+            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80" alt="Landscaped garden" />
+            <div class="project-info">
+              <div><h3>Garden Courtyard</h3><span>Landscape · 2025</span></div>
+              <span class="go">→</span>
+            </div>
+          </div>
+          <div class="project-card reveal">
+            <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80" alt="Outdoor lounge" />
+            <div class="project-info">
+              <div><h3>Sunset Lounge</h3><span>Fire pit · Decking · 2024</span></div>
+              <span class="go">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFOLIO ===================== -->
+  <section class="section-pad" id="portfolio" style="background:var(--tint);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Portfolio</span>
+        <h2>A gallery of transformations.</h2>
+        <p>Filter by the kind of space you're dreaming about.</p>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="pools">Pools</button>
+        <button class="filter" data-filter="patios">Patios</button>
+        <button class="filter" data-filter="gardens">Gardens</button>
+        <button class="filter" data-filter="living">Outdoor Living</button>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <div class="pf-item tall" data-cat="pools"><img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Azure Edge<small>Infinity pool</small></div></div>
+        <div class="pf-item" data-cat="patios"><img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Stone Terrace<small>Patio</small></div></div>
+        <div class="pf-item" data-cat="gardens"><img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">The Green Room<small>Garden</small></div></div>
+        <div class="pf-item" data-cat="living"><img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Hearth & Home<small>Outdoor living</small></div></div>
+        <div class="pf-item tall" data-cat="gardens"><img src="https://images.unsplash.com/photo-1523575708161-ad0fc2a9b951?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Verdant Walk<small>Landscape</small></div></div>
+        <div class="pf-item" data-cat="pools"><img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Moonlit Plunge<small>Pool & spa</small></div></div>
+        <div class="pf-item" data-cat="living"><img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">The Pavilion<small>Pergola lounge</small></div></div>
+        <div class="pf-item" data-cat="patios"><img src="https://images.unsplash.com/photo-1605283176568-9b41fde3672e?auto=format&fit=crop&w=700&q=80" alt=""><div class="pf-cap">Courtyard No. 7<small>Patio</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIALS ===================== -->
+  <section class="section-pad testimonials">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Testimonials</span>
+        <h2>Loved by the people who live there.</h2>
+        <p>Real words from homeowners who now spend their evenings outside.</p>
+      </div>
+      <div class="t-grid">
+        <div class="t-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"ACR turned a patch of dead grass into the heart of our home. Every dinner happens out here now. The craftsmanship is extraordinary."</p>
+          <div class="t-person">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="">
+            <div><div class="name">Sarah Mitchell</div><div class="role">Pasadena, CA</div></div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"From the 3D renders to the final stone, they were precise and calm. The pool looks like it was always meant to be there."</p>
+          <div class="t-person">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="">
+            <div><div class="name">David Chen</div><div class="role">Austin, TX</div></div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Premium from first call to handover. They respected the budget, the timeline, and our garden. We couldn't recommend ACR more."</p>
+          <div class="t-person">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80" alt="">
+            <div><div class="name">Elena Rossi</div><div class="role">Scottsdale, AZ</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="cta-section" id="contact">
+    <div class="wrap">
+      <div class="cta reveal">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80" alt="Evening backyard" />
+        <div class="cta-inner">
+          <h2>Ready to live beyond the back door?</h2>
+          <p>Book a complimentary design consultation and we'll sketch the first vision of your new backyard.</p>
+          <a href="mailto:hello@acr.studio" class="btn btn-dark">Get a free quote <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div>
+          <div class="foot-brand">ACR<span>*</span></div>
+          <p>Premium backyard renovation — design and build studio crafting outdoor spaces beyond expectations.</p>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#about">About Us</a>
+          <a href="#services">Services</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h4>Services</h4>
+          <a href="#services">Pools & Water</a>
+          <a href="#services">Outdoor Living</a>
+          <a href="#services">Landscape Design</a>
+          <a href="#services">Patios & Decks</a>
+        </div>
+        <div class="foot-col">
+          <h4>Get in touch</h4>
+          <a href="mailto:hello@acr.studio">hello@acr.studio</a>
+          <a href="tel:+18005550199">+1 (800) 555-0199</a>
+          <a href="#">Instagram</a>
+          <a href="#">Pinterest</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 ACR Backyard Studio. All rights reserved.</span>
+        <span>Designed with care, built to last.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== AI CONCIERGE ===================== -->
+  <button class="ai-fab" id="aiFab" aria-label="Open AI concierge">
+    <span class="orb"></span>
+    <span class="label">Ask ACR</span>
+  </button>
+
+  <div class="ai-panel" id="aiPanel" role="dialog" aria-label="ACR AI concierge">
+    <div class="ai-head">
+      <span class="orb"></span>
+      <div class="meta">
+        <strong>ACR Concierge</strong>
+        <small>AI assistant · online</small>
+      </div>
+      <button class="call-btn" id="aiCallBtn" aria-label="Start voice call" title="Talk to the concierge">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </button>
+      <button class="close" id="aiClose" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="ai-body" id="aiBody"></div>
+
+    <div class="ai-chips" id="aiChips">
+      <button class="ai-chip">Design a pool</button>
+      <button class="ai-chip">What does it cost?</button>
+      <button class="ai-chip">How long does it take?</button>
+      <button class="ai-chip">Book a consultation</button>
+    </div>
+
+    <div class="ai-foot">
+      <div class="ai-input">
+        <input type="text" id="aiInput" placeholder="Ask about your backyard…" autocomplete="off" />
+        <button class="mic" id="aiMic" aria-label="Speak" title="Speak your question">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </button>
+        <button class="send" id="aiSend" aria-label="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="ai-tools">
+        <div class="ai-voice-toggle on" id="aiVoiceToggle" title="Read replies aloud">
+          <span class="sw"></span><span>Voice replies</span>
+        </div>
+        <span class="hint" id="aiHint">Powered by Claude</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== AI CALL OVERLAY ===================== -->
+  <div class="ai-call" id="aiCall" data-state="connecting" role="dialog" aria-label="AI voice call">
+    <div class="caller">ACR Concierge</div>
+    <div class="state" id="callState">Connecting…</div>
+
+    <div class="call-orb-wrap">
+      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+      <span class="call-orb"></span>
+    </div>
+
+    <div class="call-caption" id="callCaption"></div>
+
+    <div class="call-controls">
+      <div class="call-ctrl">
+        <button id="callMute" aria-label="Mute mic">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </button>
+        <span id="callMuteLbl">Mute</span>
+      </div>
+      <div class="call-ctrl">
+        <button class="end" id="callEnd" aria-label="End call">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"/></svg>
+        </button>
+        <span>End</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- AI Concierge: chat + voice ----------
+    (function () {
+      const fab = document.getElementById('aiFab');
+      const panel = document.getElementById('aiPanel');
+      const closeBtn = document.getElementById('aiClose');
+      const body = document.getElementById('aiBody');
+      const input = document.getElementById('aiInput');
+      const sendBtn = document.getElementById('aiSend');
+      const micBtn = document.getElementById('aiMic');
+      const chips = document.getElementById('aiChips');
+      const voiceToggle = document.getElementById('aiVoiceToggle');
+      const hint = document.getElementById('aiHint');
+
+      // Conversation history sent to the API (user/assistant turns only).
+      const history = [];
+      let voiceOn = true;
+      let booted = false;
+
+      function openPanel() {
+        panel.classList.add('open');
+        fab.classList.add('hidden');
+        if (!booted) {
+          booted = true;
+          botSay("Hi! I'm the ACR Concierge. I can help you imagine pools, outdoor kitchens, patios, and gardens — or book a free design consultation. What are you dreaming up?", false);
+        }
+        setTimeout(() => input.focus(), 300);
+      }
+      function closePanel() { panel.classList.remove('open'); fab.classList.remove('hidden'); stopSpeaking(); }
+
+      fab.addEventListener('click', openPanel);
+      closeBtn.addEventListener('click', closePanel);
+
+      function scrollDown() { body.scrollTop = body.scrollHeight; }
+
+      function addMsg(text, who) {
+        const el = document.createElement('div');
+        el.className = 'msg ' + who;
+        el.textContent = text;
+        body.appendChild(el);
+        scrollDown();
+        return el;
+      }
+
+      function botSay(text, speakIt = true) {
+        addMsg(text, 'bot');
+        if (speakIt && voiceOn) speak(text);
+      }
+
+      function showTyping() {
+        const el = document.createElement('div');
+        el.className = 'msg bot typing';
+        el.innerHTML = '<i></i><i></i><i></i>';
+        body.appendChild(el);
+        scrollDown();
+        return el;
+      }
+
+      // Shared backend call — pushes the turn to history and returns the reply text.
+      async function askAPI(text) {
+        history.push({ role: 'user', content: text });
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history })
+        });
+        const data = await res.json();
+        const reply = (data && data.text) ? data.text
+          : "I'm having a little trouble connecting. You can always reach us at hello@acr.studio.";
+        history.push({ role: 'assistant', content: reply });
+        if (data && data.source === 'fallback') hint.textContent = 'Offline demo mode';
+        return reply;
+      }
+
+      async function send(text) {
+        text = (text || '').trim();
+        if (!text) return;
+        addMsg(text, 'user');
+        input.value = '';
+        const typing = showTyping();
+        try {
+          const reply = await askAPI(text);
+          typing.remove();
+          botSay(reply);
+        } catch (e) {
+          typing.remove();
+          botSay("I couldn't reach the studio just now — please email hello@acr.studio and we'll be right with you.");
+        }
+      }
+
+      sendBtn.addEventListener('click', () => send(input.value));
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') send(input.value); });
+      chips.addEventListener('click', e => {
+        const chip = e.target.closest('.ai-chip');
+        if (chip) send(chip.textContent);
+      });
+
+      // ---------- Voice OUTPUT (Speech Synthesis) ----------
+      const synth = window.speechSynthesis;
+      function speak(text, onEnd) {
+        if (!synth) { if (onEnd) onEnd(); return; }
+        stopSpeaking();
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 1.02; u.pitch = 1.0;
+        const v = synth.getVoices().find(v => /en[-_]?(US|GB)/i.test(v.lang) && /female|samantha|google|zira/i.test(v.name))
+               || synth.getVoices().find(v => /^en/i.test(v.lang));
+        if (v) u.voice = v;
+        let done = false;
+        u.onend = u.onerror = () => { if (done) return; done = true; if (onEnd) onEnd(); };
+        synth.speak(u);
+      }
+      function stopSpeaking() { if (synth && synth.speaking) synth.cancel(); }
+
+      voiceToggle.addEventListener('click', () => {
+        voiceOn = !voiceOn;
+        voiceToggle.classList.toggle('on', voiceOn);
+        if (!voiceOn) stopSpeaking();
+      });
+      if (!synth) voiceToggle.style.display = 'none';
+
+      // ---------- Voice INPUT (Speech Recognition) ----------
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recog = null, listening = false;
+      if (SR) {
+        recog = new SR();
+        recog.lang = 'en-US';
+        recog.interimResults = true;
+        recog.continuous = false;
+
+        recog.addEventListener('result', e => {
+          let txt = '';
+          for (let i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript;
+          input.value = txt;
+        });
+        recog.addEventListener('end', () => {
+          listening = false; micBtn.classList.remove('listening');
+          if (input.value.trim()) send(input.value);
+        });
+        recog.addEventListener('error', () => { listening = false; micBtn.classList.remove('listening'); });
+
+        micBtn.addEventListener('click', () => {
+          if (listening) { recog.stop(); return; }
+          stopSpeaking();
+          try { recog.start(); listening = true; micBtn.classList.add('listening'); input.placeholder = 'Listening…'; }
+          catch (e) { /* already started */ }
+        });
+      } else {
+        micBtn.title = 'Voice input not supported in this browser';
+        micBtn.style.opacity = '.4';
+        micBtn.addEventListener('click', () => {
+          input.placeholder = 'Try Chrome or Edge for voice input';
+        });
+      }
+
+      // ---------- AI CALL (hands-free voice conversation) ----------
+      const callBtn = document.getElementById('aiCallBtn');
+      const callOverlay = document.getElementById('aiCall');
+      const callStateEl = document.getElementById('callState');
+      const callCaption = document.getElementById('callCaption');
+      const callEndBtn = document.getElementById('callEnd');
+      const callMuteBtn = document.getElementById('callMute');
+      const callMuteLbl = document.getElementById('callMuteLbl');
+
+      const callSupported = !!SR && !!synth;
+      let inCall = false, muted = false, callRecog = null, heard = '';
+
+      function setCallState(state, label) {
+        callOverlay.dataset.state = state;
+        callStateEl.textContent = label;
+      }
+
+      if (callSupported) {
+        callRecog = new SR();
+        callRecog.lang = 'en-US';
+        callRecog.interimResults = true;
+        callRecog.continuous = false;
+
+        callRecog.addEventListener('result', e => {
+          let interim = '', fin = '';
+          for (let i = 0; i < e.results.length; i++) {
+            const t = e.results[i][0].transcript;
+            if (e.results[i].isFinal) fin += t; else interim += t;
+          }
+          heard = (fin || interim).trim();
+          if (heard) callCaption.innerHTML = '<span class="you">You</span>' + heard;
+        });
+
+        callRecog.addEventListener('end', () => {
+          if (!inCall || muted) return;
+          const text = heard.trim();
+          if (text) handleCallTurn(text);
+          else listenTurn();           // heard nothing — keep listening
+        });
+
+        callRecog.addEventListener('error', () => { /* 'end' handles the retry */ });
+      }
+
+      function listenTurn() {
+        if (!inCall || muted) return;
+        heard = '';
+        setCallState('listening', 'Listening…');
+        try { callRecog.start(); } catch (e) { /* already running */ }
+      }
+
+      async function handleCallTurn(text) {
+        if (!inCall) return;
+        setCallState('thinking', 'Thinking…');
+        let reply;
+        try { reply = await askAPI(text); }
+        catch (e) { reply = "Sorry, I think I lost you there — could you say that again?"; }
+        if (!inCall) return;
+        setCallState('speaking', 'Speaking…');
+        callCaption.textContent = reply;
+        speak(reply, () => { if (inCall && !muted) listenTurn(); });
+      }
+
+      function startCall() {
+        if (!callSupported) {
+          alert('Voice calling needs Chrome, Edge, or Safari with microphone access.');
+          return;
+        }
+        inCall = true; muted = false;
+        callMuteBtn.classList.remove('muted');
+        callMuteLbl.textContent = 'Mute';
+        closePanel();
+        callOverlay.classList.add('open');
+        const greeting = "Hi, you've reached the ACR Concierge. Tell me about the backyard you're dreaming of.";
+        callCaption.textContent = greeting;
+        setCallState('connecting', 'Connecting…');
+        setTimeout(() => {
+          if (!inCall) return;
+          setCallState('speaking', 'Speaking…');
+          speak(greeting, () => { if (inCall) listenTurn(); });
+        }, 450);
+      }
+
+      function endCall() {
+        inCall = false;
+        callOverlay.classList.remove('open');
+        stopSpeaking();
+        if (callRecog) { try { callRecog.abort(); } catch (e) {} }
+      }
+
+      callBtn.addEventListener('click', startCall);
+      callEndBtn.addEventListener('click', endCall);
+      callMuteBtn.addEventListener('click', () => {
+        if (!inCall) return;
+        muted = !muted;
+        callMuteBtn.classList.toggle('muted', muted);
+        callMuteLbl.textContent = muted ? 'Unmute' : 'Mute';
+        if (muted) {
+          if (callRecog) { try { callRecog.abort(); } catch (e) {} }
+          setCallState('listening', 'Muted');
+        } else {
+          listenTurn();
+        }
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && inCall) endCall(); });
+    })();
+  </script>
+
+  <script>
+    // Nav background on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    // Mobile menu
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+    // Portfolio filter
+    const filters = document.querySelectorAll('.filter');
+    const items = document.querySelectorAll('#portfolioGrid .pf-item');
+    filters.forEach(btn => btn.addEventListener('click', () => {
+      filters.forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      items.forEach(it => {
+        const show = f === 'all' || it.dataset.cat === f;
+        it.classList.toggle('pf-hide', !show);
+      });
+    }));
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
