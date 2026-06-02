@@ -10,6 +10,13 @@ display type, and an AI concierge that supports **chat, voice, and hands-free ca
 
 - **Responsive design** — hero with interactive image hotspots, recent projects,
   filterable portfolio, testimonials, services, and CTA.
+- **3D animations** — mouse-driven parallax tilt on the hero photo and on every
+  project / portfolio / service card, depth-popped hotspots, a breathing voice orb,
+  and scroll-reveal transitions (all disabled under `prefers-reduced-motion`).
+- **Calendar + AI booking** — pick a date and time on a live month calendar
+  (past dates & Sundays disabled), enter your details, and bookings POST to
+  `/api/book` and persist to `bookings.jsonl`. An AI slot-suggester turns a
+  phrase like _"a weekend morning next week"_ into a selected date/time.
 - **AI Concierge (chat)** — floating assistant backed by the Anthropic Messages API
   with an ACR-specific system prompt.
 - **AI Voice** — speak your questions (Web Speech recognition) and have replies

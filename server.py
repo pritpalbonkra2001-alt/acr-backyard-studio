@@ -39,9 +39,12 @@ SYSTEM_PROMPT = (
     "from concept and 3D renders through to construction. "
     "Tone: warm, confident, concise, premium — like a great studio's front desk. "
     "Help visitors understand services, ballpark process and timelines, and gently "
-    "encourage them to book a complimentary design consultation (email hello@acr.studio "
-    "or call +1 (800) 555-0199). Keep replies to 2-4 short sentences. Do not invent "
-    "exact prices; instead explain that pricing depends on scope and offer a consultation."
+    "encourage them to book a complimentary design consultation. Visitors can book a "
+    "design visit right on this site using the calendar in the booking section, or by "
+    "email hello@acr.studio or phone +1 (800) 555-0199. If someone is ready to book, "
+    "point them to the on-site calendar. Keep replies to 2-4 short sentences. You may also "
+    "be reached by voice. Do not invent exact prices; instead explain that pricing depends "
+    "on scope and offer a consultation."
 )
 
 # Lightweight offline fallback so the demo works with no API key.
@@ -129,8 +132,41 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _handle_book(self):
+        """Persist a design-visit booking to a local JSONL file."""
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+            req = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
+            name = (req.get("name") or "").strip()
+            email = (req.get("email") or "").strip()
+            date = req.get("date")
+            time = req.get("time")
+            if not (name and email and date and time):
+                self._send_json(400, {"error": "name, email, date and time are required"})
+                return
+            record = {
+                "name": name,
+                "email": email,
+                "phone": (req.get("phone") or "").strip(),
+                "date": date,
+                "dateLabel": req.get("dateLabel"),
+                "time": time,
+            }
+            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bookings.jsonl")
+            with open(path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(record) + "\n")
+            sys.stdout.write(f"[api/book] {name} <{email}> — {req.get('dateLabel') or date} {time}\n")
+            self._send_json(200, {"ok": True, "message": "Booking confirmed"})
+        except Exception as e:  # noqa: BLE001
+            sys.stderr.write(f"[api/book] {type(e).__name__}: {e}\n")
+            self._send_json(500, {"error": str(e)})
+
     def do_POST(self):
-        if self.path.rstrip("/") != "/api/chat":
+        path = self.path.rstrip("/")
+        if path == "/api/book":
+            self._handle_book()
+            return
+        if path != "/api/chat":
             self.send_error(404, "Not found")
             return
         try:
