@@ -108,15 +108,20 @@
       position: relative; min-height: 100vh; min-height: 100svh;
       display: flex; flex-direction: column; justify-content: center;
       text-align: center; padding: 124px 22px 96px; overflow: hidden;
-      background: #243744;
+      background: #243744; perspective: 1300px;
     }
-    .hero::before {
-      content: ''; position: absolute; inset: 0; z-index: 0;
+    /* 3D parallax media layer: JS tilts/drifts this in 3D; ::after runs the zoom */
+    .hero-media {
+      position: absolute; inset: -8%; z-index: 0; will-change: transform;
+      transform-style: preserve-3d; transition: transform .3s ease-out;
+    }
+    .hero-media::after {
+      content: ''; position: absolute; inset: 0;
       background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
-      transform: scale(1.03); transform-origin: 55% 45%;
+      transform: scale(1.05); transform-origin: 55% 45%;
       animation: heroZoom 24s ease-in-out infinite alternate;
     }
-    @keyframes heroZoom { from { transform: scale(1.03); } to { transform: scale(1.18); } }
+    @keyframes heroZoom { from { transform: scale(1.05); } to { transform: scale(1.18); } }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(180deg, rgba(18,34,48,.58) 0%, rgba(18,34,48,.16) 32%, rgba(18,34,48,.10) 54%, rgba(18,34,48,.66) 100%);
@@ -487,6 +492,7 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="top">
+    <div class="hero-media" id="heroMedia"></div>
     <div class="hero-overlay"></div>
     <div class="spot" style="left:20%; top:52%"><div class="dot"></div><div class="label">Infinity Pool</div></div>
     <div class="spot" style="left:50%; top:40%"><div class="dot"></div><div class="label">Fire Lounge</div></div>
@@ -814,6 +820,31 @@
           card.style.transform = `perspective(800px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) translateY(-4px)`;
         });
         card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+
+      // Hero 3D parallax — photo tilts in 3D, hotspots float at a deeper layer
+      const heroSec = document.getElementById('top');
+      const heroMedia = document.getElementById('heroMedia');
+      const heroSpots = [...heroSec.querySelectorAll('.spot')];
+      let hraf = 0, tx = 0, ty = 0;
+      heroSec.addEventListener('mousemove', (e) => {
+        const r = heroSec.getBoundingClientRect();
+        tx = (e.clientX - r.left) / r.width - 0.5;
+        ty = (e.clientY - r.top) / r.height - 0.5;
+        if (!hraf) hraf = requestAnimationFrame(applyHero);
+      });
+      function applyHero() {
+        hraf = 0;
+        heroMedia.style.transform =
+          `translate3d(${tx * -30}px, ${ty * -22}px, 0) rotateX(${ty * 4.5}deg) rotateY(${tx * -6}deg) scale(1.04)`;
+        heroSpots.forEach((s, i) => {
+          const d = 14 + i * 10;
+          s.style.transform = `translate(-50%, -50%) translate(${tx * -d}px, ${ty * -d}px)`;
+        });
+      }
+      heroSec.addEventListener('mouseleave', () => {
+        heroMedia.style.transform = '';
+        heroSpots.forEach(s => { s.style.transform = 'translate(-50%, -50%)'; });
       });
     }
 
