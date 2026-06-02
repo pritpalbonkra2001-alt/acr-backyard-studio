@@ -105,26 +105,43 @@
 
     /* ---------- Hero ---------- */
     .hero {
-      position: relative; padding: 132px 0 0; text-align: center;
-      background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 26%, var(--sky-3) 52%, var(--sky-soft) 74%, #fff 100%);
+      position: relative; min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center;
+      text-align: center; padding: 124px 22px 96px; overflow: hidden;
+      background: #243744;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+      transform: scale(1.03); transform-origin: 55% 45%;
+      animation: heroZoom 24s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom { from { transform: scale(1.03); } to { transform: scale(1.18); } }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(18,34,48,.58) 0%, rgba(18,34,48,.16) 32%, rgba(18,34,48,.10) 54%, rgba(18,34,48,.66) 100%);
+    }
+    .hero-content { position: relative; z-index: 3; max-width: 920px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-block; color: rgba(255,255,255,.82); font-weight: 600;
+      font-size: 12px; letter-spacing: .28em; text-transform: uppercase; margin-bottom: 20px;
     }
     .hero h1 {
-      font-size: clamp(44px, 8vw, 104px); font-weight: 500; color: #fff;
-      letter-spacing: -.02em; line-height: .98; text-shadow: 0 2px 30px rgba(40,70,95,.18);
+      font-size: clamp(36px, 7vw, 92px); font-weight: 500; color: #fff;
+      letter-spacing: -.02em; line-height: 1.0; text-shadow: 0 4px 30px rgba(0,0,0,.4);
     }
-    .hero .sub { color: rgba(255,255,255,.92); max-width: 540px; margin: 26px auto 0; font-size: 17px; font-weight: 400; }
-    .hero-stage {
-      perspective: 1400px; margin: 46px auto 0; max-width: 1040px; padding: 0 26px;
+    .hero .sub {
+      color: rgba(255,255,255,.92); max-width: 560px; margin: 24px auto 0; font-size: 17px;
+      font-weight: 400; text-shadow: 0 2px 16px rgba(0,0,0,.35);
     }
-    .hero-photo {
-      position: relative; border-radius: 30px; overflow: visible;
-      transform-style: preserve-3d; transition: transform .25s ease;
-      will-change: transform;
+    .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+    .scroll-cue {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 3;
+      color: rgba(255,255,255,.85); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
-    .hero-photo img {
-      width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 30px;
-      box-shadow: 0 50px 90px -50px rgba(25,50,75,.6);
-    }
+    .scroll-cue::after { content: ''; width: 1px; height: 30px; background: rgba(255,255,255,.6); transform-origin: top; animation: cue 1.8s ease-in-out infinite; }
+    @keyframes cue { 0%,100%{ transform: scaleY(.4); opacity:.4; } 50%{ transform: scaleY(1); opacity:1; } }
     /* Hotspots */
     .spot { position: absolute; transform: translate(-50%, -50%) translateZ(50px); z-index: 4; }
     .spot .dot {
@@ -402,14 +419,27 @@
       .intro { padding: 80px 0 64px; }
     }
     @media (max-width: 560px) {
-      .hero h1 { font-size: clamp(34px, 9vw, 46px); }
-      .hero { padding-top: 116px; }
+      .wrap { padding: 0 18px; }
+      .hero { padding: 104px 18px 84px; }
+      .hero h1 { font-size: clamp(26px, 7.5vw, 46px); letter-spacing: -.01em; line-height: 1.08; }
+      .hb { display: none; }                      /* let the headline wrap naturally */
+      .hero .sub { font-size: 15px; }
+      .spot .label { display: none; }             /* avoid overflow on tiny screens */
+      .nav-shell { padding: 6px 6px 6px 16px; gap: 8px; }
+      .brand { font-size: 20px; }
+      .nav-ico { width: 40px; height: 40px; }
       .gallery { grid-template-columns: 1fr; }
       .tile.wide { grid-column: span 1; aspect-ratio: 1/1; }
       .foot-grid { grid-template-columns: 1fr; }
       .foot-bottom { flex-direction: column; gap: 8px; text-align: center; }
-      .intro h2 .inline-img { width: 96px; height: 42px; }
-      .book-left, .book-right { padding: 28px; }
+      .intro h2 .inline-img { width: 92px; height: 40px; }
+      .book-left, .book-right { padding: 24px; }
+      .p-meta { gap: 20px; flex-wrap: wrap; }
+      .ai-suggest .row { flex-direction: column; }
+      .ai-suggest input, .ai-suggest button { width: 100%; padding-top: 11px; padding-bottom: 11px; }
+      .btn { font-size: 14px; }
+      .fab { width: 54px; height: 54px; }
+      .fab svg { width: 23px; height: 23px; }
     }
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
@@ -457,18 +487,20 @@
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="top">
-    <div class="wrap">
-      <h1 class="reveal">Experience outdoor<br />living beyond limits.</h1>
+    <div class="hero-overlay"></div>
+    <div class="spot" style="left:20%; top:52%"><div class="dot"></div><div class="label">Infinity Pool</div></div>
+    <div class="spot" style="left:50%; top:40%"><div class="dot"></div><div class="label">Fire Lounge</div></div>
+    <div class="spot show" style="left:76%; top:60%"><div class="dot"></div><div class="label">Outdoor Kitchen</div></div>
+    <div class="wrap hero-content">
+      <span class="hero-eyebrow reveal">Premium Backyard Renovation · Vancouver</span>
+      <h1 class="reveal">Experience outdoor <br class="hb" />living beyond limits.</h1>
       <p class="sub reveal">Embrace a backyard where design meets comfort — pools, fire lounges and gardens crafted into moments beyond your expectations.</p>
-    </div>
-    <div class="hero-stage reveal">
-      <div class="hero-photo" id="heroPhoto">
-        <img src="https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&w=1400&q=80" alt="Modern backyard with pool, deck and lounge at dusk" />
-        <div class="spot" style="left:22%; top:46%"><div class="dot"></div><div class="label">Infinity Pool</div></div>
-        <div class="spot" style="left:55%; top:34%"><div class="dot"></div><div class="label">Fire Lounge</div></div>
-        <div class="spot show" style="left:74%; top:64%"><div class="dot"></div><div class="label">Outdoor Kitchen</div></div>
+      <div class="hero-cta reveal">
+        <a href="#book" class="btn btn-light">Book a Visit <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+        <a href="#portfolio" class="btn btn-light" style="background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(6px)">See Portfolio</a>
       </div>
     </div>
+    <a href="#services" class="scroll-cue" aria-label="Scroll down">Scroll</a>
   </section>
 
   <!-- ===== INTRO ===== -->
@@ -783,16 +815,6 @@
         });
         card.addEventListener('mouseleave', () => { card.style.transform = ''; });
       });
-      // Hero parallax tilt
-      const hero = document.getElementById('heroPhoto');
-      const stage = hero.parentElement;
-      stage.addEventListener('mousemove', (e) => {
-        const r = stage.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        hero.style.transform = `rotateY(${px * 6}deg) rotateX(${-py * 5}deg)`;
-      });
-      stage.addEventListener('mouseleave', () => { hero.style.transform = ''; });
     }
 
     /* ---------- Portfolio filter ---------- */
@@ -1015,5 +1037,6 @@
     }
     callStart.addEventListener('click', () => { if (!calling) startCall(); });
   </script>
+
 </body>
 </html>

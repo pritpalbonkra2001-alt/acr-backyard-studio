@@ -1,30 +1,21 @@
-#!/usr/bin/env python3
-"""ACR backyard studio demo server.
+"""Vercel serverless function for the ACR Concierge chat.
 
-Serves the static ACR site AND proxies the AI concierge chat to the Anthropic
-Messages API, so the assistant works standalone.
+Deployed at /api/chat (Vercel maps api/<name>.py -> /api/<name>). Mirrors the
+local server.py proxy: forwards the messages array to the Anthropic Messages API
+using the ANTHROPIC_API_KEY set in the Vercel project's environment variables.
 
-Usage:
-    export ANTHROPIC_API_KEY=sk-ant-...
-    python3 server.py            # serves on http://localhost:8123
-    PORT=9000 python3 server.py  # custom port
+If no key is configured, it falls back to a built-in keyword responder so the
+deployed demo never looks broken.
 
-Optional:
-    ANTHROPIC_MODEL   override the model (default: claude-haiku-4-5-20251001)
-
-Zero dependencies — standard library only. If ANTHROPIC_API_KEY is unset, the
-site still works and the chat falls back to a built-in keyword responder so the
-demo never looks broken.
+Zero dependencies — Python standard library only, so no requirements.txt needed.
 """
 
 import json
 import os
 import re
-import sys
 import urllib.error
 import urllib.request
-from functools import partial
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
 
 ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 DEFAULT_MODEL = "claude-haiku-4-5-20251001"
@@ -47,7 +38,6 @@ SYSTEM_PROMPT = (
     "on scope and offer a consultation."
 )
 
-# Lightweight offline fallback so the demo works with no API key.
 FALLBACK_RULES = [
     (r"\b(price|cost|quote|budget|how much)\b",
      "Every backyard is bespoke, so pricing depends on scope — pool, hardscape, planting, and finishes. "
@@ -65,20 +55,19 @@ FALLBACK_RULES = [
      "Timelines vary with scope, but most full backyard transformations run roughly 8–16 weeks from approved design. "
      "We'll give you a firm schedule after the site visit."),
     (r"\b(contact|book|consult|appointment|talk|call|email|reach)\b",
-     "Wonderful — book a complimentary design consultation at hello@acr.studio or call +1 (800) 555-0199, "
-     "and we'll sketch the first vision of your new backyard."),
+     "Wonderful — book a complimentary design visit right here using the calendar, or reach us at hello@acr.studio "
+     "or +1 (800) 555-0199, and we'll sketch the first vision of your new backyard."),
     (r"\b(hi|hello|hey|greetings)\b",
      "Hi there! I'm the ACR Concierge. I can tell you about our pools, outdoor kitchens, landscaping, "
      "and design-build process — what are you dreaming up for your backyard?"),
 ]
 FALLBACK_DEFAULT = (
     "I'm the ACR Concierge — I can help with pools, outdoor kitchens, patios, landscaping, and our design-build "
-    "process. Tell me about your space, or book a free consultation at hello@acr.studio."
+    "process. Tell me about your space, or book a free design visit using the calendar on this page."
 )
 
 
 def fallback_reply(messages):
-    """Keyword-matched reply used when no API key is configured."""
     last_user = ""
     for m in reversed(messages):
         if m.get("role") == "user":
@@ -91,7 +80,6 @@ def fallback_reply(messages):
 
 
 def call_anthropic(messages):
-    """Forward a messages array to the Anthropic Messages API, return reply text."""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         raise RuntimeError("ANTHROPIC_API_KEY is not set")
@@ -123,13 +111,7 @@ def call_anthropic(messages):
     ).strip()
 
 
-class Handler(SimpleHTTPRequestHandler):
-    def end_headers(self):
-        # Never cache the static demo, so edits always show on refresh.
-        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
-        self.send_header("Pragma", "no-cache")
-        super().end_headers()
-
+class handler(BaseHTTPRequestHandler):
     def _send_json(self, status, obj):
         body = json.dumps(obj).encode("utf-8")
         self.send_response(status)
@@ -138,43 +120,7 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def _handle_book(self):
-        """Persist a design-visit booking to a local JSONL file."""
-        try:
-            length = int(self.headers.get("Content-Length", 0))
-            req = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
-            name = (req.get("name") or "").strip()
-            email = (req.get("email") or "").strip()
-            date = req.get("date")
-            time = req.get("time")
-            if not (name and email and date and time):
-                self._send_json(400, {"error": "name, email, date and time are required"})
-                return
-            record = {
-                "name": name,
-                "email": email,
-                "phone": (req.get("phone") or "").strip(),
-                "date": date,
-                "dateLabel": req.get("dateLabel"),
-                "time": time,
-            }
-            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bookings.jsonl")
-            with open(path, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(record) + "\n")
-            sys.stdout.write(f"[api/book] {name} <{email}> — {req.get('dateLabel') or date} {time}\n")
-            self._send_json(200, {"ok": True, "message": "Booking confirmed"})
-        except Exception as e:  # noqa: BLE001
-            sys.stderr.write(f"[api/book] {type(e).__name__}: {e}\n")
-            self._send_json(500, {"error": str(e)})
-
     def do_POST(self):
-        path = self.path.rstrip("/")
-        if path == "/api/book":
-            self._handle_book()
-            return
-        if path != "/api/chat":
-            self.send_error(404, "Not found")
-            return
         try:
             length = int(self.headers.get("Content-Length", 0))
             req = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
@@ -186,33 +132,10 @@ class Handler(SimpleHTTPRequestHandler):
                 text = call_anthropic(messages)
                 source = "anthropic"
             except RuntimeError:
-                # No API key — graceful offline fallback.
                 text = fallback_reply(messages)
                 source = "fallback"
             self._send_json(200, {"text": text, "source": source})
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", "replace")
-            sys.stderr.write(f"[api/chat] Anthropic {e.code}: {detail}\n")
-            # Still answer the visitor with the offline responder.
+        except urllib.error.HTTPError:
             self._send_json(200, {"text": fallback_reply(req.get("messages", [])), "source": "fallback"})
         except Exception as e:  # noqa: BLE001
-            sys.stderr.write(f"[api/chat] {type(e).__name__}: {e}\n")
             self._send_json(500, {"error": str(e)})
-
-
-def main():
-    port = int(os.environ.get("PORT", sys.argv[1] if len(sys.argv) > 1 else 8123))
-    directory = os.path.dirname(os.path.abspath(__file__))
-    handler = partial(Handler, directory=directory)
-    server = ThreadingHTTPServer(("", port), handler)
-    keyed = "set" if os.environ.get("ANTHROPIC_API_KEY") else "NOT set — chat uses offline fallback"
-    print(f"ACR studio on http://localhost:{port}  (ANTHROPIC_API_KEY: {keyed})")
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print("\nShutting down.")
-        server.shutdown()
-
-
-if __name__ == "__main__":
-    main()
